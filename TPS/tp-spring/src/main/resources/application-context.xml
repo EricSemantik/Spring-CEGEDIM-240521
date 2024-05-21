@@ -12,9 +12,18 @@
 
 	<bean id="guitare" class="spring.formation.orchestre.Guitare"/>
 	
+	<bean id="piano" class="spring.formation.orchestre.Piano"/>
+	
+	<bean id="ukulele" class="spring.formation.orchestre.Ukulele"/>
+	
 	<bean id="guitariste" class="spring.formation.orchestre.Guitariste">
 		<property name="instrument" ref="guitare"/>
 		<property name="morceau" value="Vive le vent ..."/>
+	</bean>
+	
+	<bean id="pianiste" class="spring.formation.orchestre.Pianiste">
+		<constructor-arg value="La lettre à Elise"/>
+		<constructor-arg ref="piano"/>
 	</bean>
 
 </beans>

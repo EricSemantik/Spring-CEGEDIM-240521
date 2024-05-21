@@ -1,19 +1,19 @@
 package spring.formation.orchestre;
 
-public class Guitariste implements IMusicien {
+public class Pianiste implements IMusicien {
 	private IInstrument instrument;
 	private String morceau;
 
-	public Guitariste() {
+	public Pianiste() {
 
 	}
 
-	public Guitariste(String morceau) {
+	public Pianiste(String morceau) {
 		super();
 		this.morceau = morceau;
 	}
 
-	public Guitariste(IInstrument instrument, String morceau) {
+	public Pianiste(IInstrument instrument, String morceau) {
 		super();
 		this.instrument = instrument;
 		this.morceau = morceau;
@@ -21,7 +21,7 @@ public class Guitariste implements IMusicien {
 
 	@Override
 	public void jouer() {
-		System.out.println("Le guitariste joue : " + this.morceau + " (" + this.instrument.son() + ")");
+		System.out.println("Le pianiste joue : " + this.morceau + " (" + this.instrument.son() + ")");
 	}
 
 	public IInstrument getInstrument() {
@@ -36,8 +36,8 @@ public class Guitariste implements IMusicien {
 		return morceau;
 	}
 
-	public void setMorceau(String morceau) {
-		this.morceau = morceau;
-	}
+//	public void setMorceau(String morceau) {
+//		this.morceau = morceau;
+//	}
 
 }
