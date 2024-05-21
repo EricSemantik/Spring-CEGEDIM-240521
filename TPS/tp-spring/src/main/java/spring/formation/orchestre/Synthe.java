@@ -3,11 +3,11 @@ package spring.formation.orchestre;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Piano implements IInstrument{
+public class Synthe implements IInstrument{
 
 	@Override
 	public String son() {
-		return "PLINK PLINK PLINK";
+		return "SLINK SLINK SLINK";
 	}
 
 }
