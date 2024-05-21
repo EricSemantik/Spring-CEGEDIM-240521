@@ -12,7 +12,7 @@ public class Application {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
 
 		IMusicien monMusicien = context.getBean("guitariste", IMusicien.class);
-
+		
 		monMusicien.jouer();
 
 		IMusicien monMusicienBis = context.getBean("pianiste", IMusicien.class); // new Pianiste("La lettre à Elise",

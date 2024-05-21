@@ -12,6 +12,8 @@
 
 	<!-- Activation des annotations : @Component, @Autowired, ... (en précisant le(s) package(s) à scanner) -->
 	<context:component-scan base-package="spring.formation.orchestre"/>
+	
+	<context:property-placeholder location="classpath:musique.properties"/>
 
 	<bean id="guitare" class="spring.formation.orchestre.Guitare"/>
 	
@@ -19,10 +21,10 @@
 	
 <!-- 	<bean id="ukulele" class="spring.formation.orchestre.Ukulele"/> -->
 	
-<!-- 	<bean id="guitariste" class="spring.formation.orchestre.Guitariste"> -->
-<!-- 		<property name="instrument" ref="guitare"/> -->
-<!-- 		<property name="morceau" value="Vive le vent ..."/> -->
-<!-- 	</bean> -->
+	<bean id="guitariste" class="spring.formation.orchestre.Guitariste" init-method="commeJeVeux">
+		<property name="instrument" ref="${orchestre.guitariste.instrument}"/>
+		<property name="morceau" value="Vive le vent ..."/>
+	</bean>
 	
 <!-- 	<bean id="pianiste" class="spring.formation.orchestre.Pianiste"> -->
 <!-- 		<constructor-arg value="La lettre à Elise"/> -->

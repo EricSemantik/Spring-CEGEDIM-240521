@@ -1,17 +1,12 @@
 package spring.formation.orchestre;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-@Component
+//@Component
 public class Guitariste implements IMusicien {
 	private IInstrument instrument;
 	private String morceau;
 
 	public Guitariste() {
-
+		System.out.println("Par le constructeur");
 	}
 
 	public Guitariste(String morceau) {
@@ -22,7 +17,6 @@ public class Guitariste implements IMusicien {
 	public Guitariste(IInstrument instrument, String morceau) {
 		super();
 
-		System.out.println("Par le cosntructeur");
 		this.instrument = instrument;
 		this.morceau = morceau;
 	}
@@ -36,8 +30,8 @@ public class Guitariste implements IMusicien {
 		return instrument;
 	}
 
-	@Autowired
-	@Qualifier("ukulele")
+//	@Autowired
+//	@Qualifier("${orchestre.guitariste.instrument}")
 	public void setInstrument(IInstrument instrument) {
 		this.instrument = instrument;
 	}
@@ -46,9 +40,14 @@ public class Guitariste implements IMusicien {
 		return morceau;
 	}
 
-	@Value("Vive le vent ...")
+//	@Value("Vive le vent ...")
 	public void setMorceau(String morceau) {
 		this.morceau = morceau;
+	}
+
+//	@PostConstruct
+	public void commeJeVeux() {
+		this.morceau = this.morceau.toUpperCase();
 	}
 
 }
