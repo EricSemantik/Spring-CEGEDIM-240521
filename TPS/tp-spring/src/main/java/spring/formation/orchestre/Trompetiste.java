@@ -1,27 +1,28 @@
 package spring.formation.orchestre;
 
-import javax.annotation.Resource;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Pianiste implements IMusicien {
-	@Resource(name="${orchestre.pianiste.instrument}")
+public class Trompetiste implements IMusicien {
+	@Autowired
+	@Qualifier("trompette")
 	private IInstrument instrument;
-	@Value("La lettre à Elise") 
+	@Value("Pouet pouet pouet")
 	private String morceau;
 
-	public Pianiste() {
+	public Trompetiste() {
 
 	}
 
-	public Pianiste(String morceau) {
+	public Trompetiste(String morceau) {
 		super();
 		this.morceau = morceau;
 	}
 
-	public Pianiste(IInstrument instrument, String morceau) {
+	public Trompetiste(IInstrument instrument, String morceau) {
 		super();
 		this.instrument = instrument;
 		this.morceau = morceau;
@@ -29,8 +30,7 @@ public class Pianiste implements IMusicien {
 
 	@Override
 	public void jouer() {
-		System.out.println("Le pianiste joue : " + this.morceau + " (" + this.instrument.son() + ")");
-//		throw new RuntimeException("Fausse note");
+		System.out.println("Le trompétiste joue : " + this.morceau + " (" + this.instrument.son() + ")");
 	}
 
 	public IInstrument getInstrument() {

@@ -2,20 +2,24 @@ package spring.formation.config;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
 
+import spring.formation.aspect.Spectateur;
 import spring.formation.orchestre.Guitare;
 import spring.formation.orchestre.Guitariste;
 import spring.formation.orchestre.IInstrument;
 import spring.formation.orchestre.IMusicien;
 
 @Configuration
-@ComponentScan("spring.formation.orchestre") // Activation des annotations : @Component, @Autowired, ... (en précisant le(s) package(s) à scanner)
+@ComponentScan({"spring.formation.orchestre", "spring.formation.aspect"}) // Activation des annotations : @Component, @Autowired, ... (en précisant le(s) package(s) à scanner)
 @PropertySource("classpath:musique.properties")
+@EnableAspectJAutoProxy
 public class ApplicationConfig {
 	
 	@Resource(name="${orchestre.guitariste.instrument}")
@@ -52,4 +56,8 @@ public class ApplicationConfig {
 //		return new Pianiste(instrument, morceau);
 //	}
 	
+	@Bean
+	public Spectateur spectateur(@Qualifier("trompetiste") IMusicien musicien) {
+		return new Spectateur(musicien);
+	}
 }

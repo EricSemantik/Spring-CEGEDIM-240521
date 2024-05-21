@@ -11,7 +11,7 @@
         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 	<!-- Activation des annotations : @Component, @Autowired, ... (en précisant le(s) package(s) à scanner) -->
-	<context:component-scan base-package="spring.formation.orchestre"/>
+	<context:component-scan base-package="spring.formation.orchestre, spring.formation.aspect"/>
 	
 	<context:property-placeholder location="classpath:musique.properties"/>
 
@@ -30,5 +30,19 @@
 <!-- 		<constructor-arg value="La lettre à Elise"/> -->
 <!-- 		<constructor-arg ref="piano"/> -->
 <!-- 	</bean> -->
+
+	<!-- Activation du tissage d'aspect -->
+	<aop:aspectj-autoproxy/>
 	
+	<bean id="spectacteur" class="spring.formation.aspect.Spectateur"/>
+	
+	<aop:config>
+		<aop:pointcut expression="execution(void spring.formation.orchestre.*.jouer())" id="musicienJouer"/>
+		<aop:aspect ref="spectacteur">
+			<aop:before method="assoir" pointcut-ref="musicienJouer"/>
+			<aop:after-returning method="applaudir" pointcut-ref="musicienJouer"/>
+			<aop:after-throwing method="rembourser" throwing="ex" pointcut-ref="musicienJouer"/>
+		</aop:aspect>
+	</aop:config>
+
 </beans>
