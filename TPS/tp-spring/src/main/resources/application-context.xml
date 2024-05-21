@@ -10,20 +10,23 @@
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
+	<!-- Activation des annotations : @Component, @Autowired, ... (en précisant le(s) package(s) à scanner) -->
+	<context:component-scan base-package="spring.formation.orchestre"/>
+
 	<bean id="guitare" class="spring.formation.orchestre.Guitare"/>
 	
-	<bean id="piano" class="spring.formation.orchestre.Piano"/>
+<!-- 	<bean id="piano" class="spring.formation.orchestre.Piano"/> -->
 	
-	<bean id="ukulele" class="spring.formation.orchestre.Ukulele"/>
+<!-- 	<bean id="ukulele" class="spring.formation.orchestre.Ukulele"/> -->
 	
-	<bean id="guitariste" class="spring.formation.orchestre.Guitariste">
-		<property name="instrument" ref="guitare"/>
-		<property name="morceau" value="Vive le vent ..."/>
-	</bean>
+<!-- 	<bean id="guitariste" class="spring.formation.orchestre.Guitariste"> -->
+<!-- 		<property name="instrument" ref="guitare"/> -->
+<!-- 		<property name="morceau" value="Vive le vent ..."/> -->
+<!-- 	</bean> -->
 	
-	<bean id="pianiste" class="spring.formation.orchestre.Pianiste">
-		<constructor-arg value="La lettre à Elise"/>
-		<constructor-arg ref="piano"/>
-	</bean>
-
+<!-- 	<bean id="pianiste" class="spring.formation.orchestre.Pianiste"> -->
+<!-- 		<constructor-arg value="La lettre à Elise"/> -->
+<!-- 		<constructor-arg ref="piano"/> -->
+<!-- 	</bean> -->
+	
 </beans>

@@ -15,6 +15,8 @@ public class Guitariste implements IMusicien {
 
 	public Guitariste(IInstrument instrument, String morceau) {
 		super();
+
+		System.out.println("Par le cosntructeur");
 		this.instrument = instrument;
 		this.morceau = morceau;
 	}
