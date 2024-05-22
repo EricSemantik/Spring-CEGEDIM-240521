@@ -6,11 +6,12 @@ import java.time.LocalDateTime;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
-import spring.formation.EShopApplication;
+import spring.formation.config.JPAConfiguration;
 import spring.formation.model.Adresse;
 import spring.formation.model.Civilite;
 import spring.formation.model.Client;
@@ -25,16 +26,16 @@ import spring.formation.model.Utilisateur;
 
 public class PopulateTest {
 
-	private static EntityManagerFactory emf;
+	private static AnnotationConfigApplicationContext context = null;
 
 	@BeforeClass
 	public static void beforeAll() {
-		emf = EShopApplication.getInstance().getEmf();
+		context = new AnnotationConfigApplicationContext(JPAConfiguration.class);
 	}
 
 	@AfterClass
 	public static void afterAll() {
-		emf.close();
+		context.close();
 	}
 
 	@Test
@@ -43,7 +44,7 @@ public class PopulateTest {
 		EntityTransaction tx = null;
 
 		try {
-			em = EShopApplication.getInstance().getEmf().createEntityManager();
+			em = context.getBean(EntityManagerFactory.class).createEntityManager();
 			tx = em.getTransaction();
 			tx.begin();
 

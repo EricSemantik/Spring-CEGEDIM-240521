@@ -1,134 +1,53 @@
 package spring.formation.repository.jpa;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
-import spring.formation.EShopApplication;
 import spring.formation.model.Utilisateur;
 import spring.formation.repository.IUtilisateurRepository;
 
+@Repository
+@Transactional(readOnly = true)
 public class UtilisateurRepositoryJpa implements IUtilisateurRepository {
+
+	@PersistenceContext
+	private EntityManager em;
 
 	@Override
 	public List<Utilisateur> findAll() {
-		List<Utilisateur> liste = new ArrayList<Utilisateur>();
-		
-		EntityManager em = null;
-		EntityTransaction tx = null;
-		
-		try {
-			em = EShopApplication.getInstance().getEmf().createEntityManager();
-			tx = em.getTransaction();
-			tx.begin();
-		
-			TypedQuery<Utilisateur> query = em.createQuery("select u from Utilisateur u", Utilisateur.class);
-			
-			liste = query.getResultList();
-			
-			tx.commit();
-		} catch (Exception e) {
-			if(tx != null && tx.isActive()) {
-				tx.rollback();
-			}
-			e.printStackTrace();
-		} finally {
-			if (em != null) {
-				em.close();
-			}
-		}
-		
-		return liste;
+		TypedQuery<Utilisateur> query = em.createQuery("select u from Utilisateur u", Utilisateur.class);
+
+		return query.getResultList();
 	}
 
 	@Override
 	public Utilisateur findById(Long id) {
-		Utilisateur obj = null;
-		
-		EntityManager em = null;
-		EntityTransaction tx = null;
-		
-		try {
-			em = EShopApplication.getInstance().getEmf().createEntityManager();
-			tx = em.getTransaction();
-			tx.begin();
-		
-			TypedQuery<Utilisateur> query = em.createQuery("select u from Utilisateur u where u.id = ?1", Utilisateur.class);
-			query.setParameter(1, id);
-			
-			obj = query.getSingleResult();
-			
-			tx.commit();
-		} catch (Exception e) {
-			if(tx != null && tx.isActive()) {
-				tx.rollback();
-			}
-			e.printStackTrace();
-		} finally {
-			if (em != null) {
-				em.close();
-			}
-		}
-		
-		return obj;
+		TypedQuery<Utilisateur> query = em.createQuery("select u from Utilisateur u where u.id = ?1",
+				Utilisateur.class);
+		query.setParameter(1, id);
+
+		return query.getSingleResult();
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public Utilisateur save(Utilisateur obj) {
-		EntityManager em = null;
-		EntityTransaction tx = null;
-		
-		try {
-			em = EShopApplication.getInstance().getEmf().createEntityManager();
-			tx = em.getTransaction();
-			tx.begin();
-		
-			obj = em.merge(obj);
-			
-			tx.commit();
-		} catch (Exception e) {
-			if(tx != null && tx.isActive()) {
-				tx.rollback();
-			}
-			e.printStackTrace();
-		} finally {
-			if (em != null) {
-				em.close();
-			}
-		}
-		
-		return obj;
+		return em.merge(obj);
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void deleteById(Long id) {
-		EntityManager em = null;
-		EntityTransaction tx = null;
-		
-		try {
-			em = EShopApplication.getInstance().getEmf().createEntityManager();
-			tx = em.getTransaction();
-			tx.begin();
-		
-			Query query = em.createQuery("delete from Utilisateur u where u.id = ?1");
-			query.setParameter(1, id);
-			
-			query.executeUpdate();
-			
-			tx.commit();
-		} catch (Exception e) {
-			if(tx != null && tx.isActive()) {
-				tx.rollback();
-			}
-			e.printStackTrace();
-		} finally {
-			if (em != null) {
-				em.close();
-			}
-		}		
+		Query query = em.createQuery("delete from Utilisateur u where u.id = ?1");
+		query.setParameter(1, id);
+
+		query.executeUpdate();
 	}
 
 }
