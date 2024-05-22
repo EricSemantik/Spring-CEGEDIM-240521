@@ -30,9 +30,9 @@ public class Produit {
 
 	@Column(length = 100)
 	private String modele;
-	
+
 	@ManyToOne
-	@JoinColumn(name="fournisseur_id")
+	@JoinColumn(name = "fournisseur_id")
 	private Fournisseur fournisseur;
 
 	@OneToMany(mappedBy = "produit")
@@ -91,6 +91,22 @@ public class Produit {
 
 	public void setCommandeDetails(List<CommandeDetail> commandeDetails) {
 		this.commandeDetails = commandeDetails;
+	}
+
+	public Fournisseur getFournisseur() {
+		return fournisseur;
+	}
+
+	public void setFournisseur(Fournisseur fournisseur) {
+		this.fournisseur = fournisseur;
+	}
+
+	public List<Commentaire> getCommentaires() {
+		return commentaires;
+	}
+
+	public void setCommentaires(List<Commentaire> commentaires) {
+		this.commentaires = commentaires;
 	}
 
 }

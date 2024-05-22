@@ -39,6 +39,17 @@ public class Commande {
 	@OneToMany(mappedBy = "commande")
 	private List<CommandeDetail> commandeDetails = new ArrayList<>();
 
+	public Commande() {
+		super();
+	}
+
+	public Commande(LocalDateTime dtCommande, EtatCommande etat, Client client) {
+		super();
+		this.dtCommande = dtCommande;
+		this.etat = etat;
+		this.client = client;
+	}
+
 	public Long getId() {
 		return id;
 	}

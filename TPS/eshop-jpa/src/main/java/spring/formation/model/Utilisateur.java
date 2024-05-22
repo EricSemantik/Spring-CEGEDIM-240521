@@ -37,6 +37,18 @@ public class Utilisateur {
 	@Enumerated(EnumType.STRING)
 	private Set<Role> roles = new HashSet<>();
 
+	public Utilisateur() {
+		super();
+	}
+
+	public Utilisateur(String identifiant, String motDePasse, boolean active, Role... roles) {
+		super();
+		this.identifiant = identifiant;
+		this.motDePasse = motDePasse;
+		this.active = active;
+		this.roles = Set.of(roles);
+	}
+
 	public Long getId() {
 		return id;
 	}
