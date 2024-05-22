@@ -88,7 +88,7 @@ public class PopulateTest {
 			client.setUtilisateur(utiClient);
 			
 			client = em.merge(client);	
-			
+						
 			Commentaire comment1 = new Commentaire();
 			comment1.setClient(client);
 			comment1.setProduit(produit);

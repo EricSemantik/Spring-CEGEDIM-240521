@@ -7,9 +7,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityTransaction;
 import spring.formation.EShopApplication;
 import spring.formation.model.Adresse;
 import spring.formation.model.Civilite;
@@ -50,7 +48,7 @@ public class PopulateWithRepositoriesTest {
 		fournisseur.setEmail("contact@amazon.fr");
 		fournisseur.getAdresses().add(adrFournisseur);
 
-		fournisseur = em.merge(fournisseur);
+		fournisseur = EShopApplication.getInstance().getFournisseurRepository().save(fournisseur);
 
 		Produit produit = new Produit();
 		produit.setNom("IPhone");
@@ -59,16 +57,16 @@ public class PopulateWithRepositoriesTest {
 		produit.setModele("XS 4");
 		produit.setReference("IPhone XS 4");
 
-		produit = em.merge(produit);
+		produit = EShopApplication.getInstance().getProduitRepository().save(produit);
 
 		Utilisateur utiAdmin = new Utilisateur("admin", "123456", true, Role.ADMIN);
-		utiAdmin = em.merge(utiAdmin);
+		utiAdmin = EShopApplication.getInstance().getUtilisateurRepository().save(utiAdmin);
 
 		Utilisateur utiClient = new Utilisateur("esultan", "123456", true, Role.CLIENT);
-		utiClient = em.merge(utiClient);
+		utiClient = EShopApplication.getInstance().getUtilisateurRepository().save(utiClient);
 
 		Adresse adrClient = new Adresse("1 rue de Toulouse", "33000", "Bordeaux");
-		adrClient = em.merge(adrClient);
+		adrClient = EShopApplication.getInstance().getAdresseRepository().save(adrClient);
 
 		Client client = new Client();
 		client.setCivilite(Civilite.M);
@@ -79,7 +77,7 @@ public class PopulateWithRepositoriesTest {
 		client.setAdresse(adrClient);
 		client.setUtilisateur(utiClient);
 
-		client = em.merge(client);
+		client = EShopApplication.getInstance().getClientRepository().save(client);
 
 		Commentaire comment1 = new Commentaire();
 		comment1.setClient(client);
@@ -88,17 +86,19 @@ public class PopulateWithRepositoriesTest {
 		comment1.setNote(18);
 		comment1.setDetail("Produit qui correspond à mes attentes (je mens)");
 
-		comment1 = em.merge(comment1);
+		comment1 = EShopApplication.getInstance().getCommentaireRepository().save(comment1);
 
 		Commande commande = new Commande(LocalDateTime.now(), EtatCommande.ENCOURS, client);
 
-		commande = em.merge(commande);
+		commande = EShopApplication.getInstance().getCommandeRepository().save(commande);
 
 		CommandeDetail commandeIphone = new CommandeDetail(200d, 2, produit, commande);
 
-		commandeIphone = em.merge(commandeIphone);
+		commandeIphone = EShopApplication.getInstance().getCommandeDetailRepository().save(commandeIphone);
 
 		commande.setPrixTotal(200d);
+		
+		commande = EShopApplication.getInstance().getCommandeRepository().save(commande);
 
 	}
 
