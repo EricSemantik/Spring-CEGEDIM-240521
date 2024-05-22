@@ -3,7 +3,6 @@ package spring.formation.repository.jpa;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityManager;
@@ -45,6 +44,14 @@ public class AdresseRepositoryJpa implements IAdresseRepository {
 		query.setParameter("monId", id);
 
 		query.executeUpdate();
+	}
+
+	@Override
+	public List<Adresse> findAllByVille(String ville) {
+		TypedQuery<Adresse> query = em.createQuery("select adr from Adresse adr where adr.ville = ?1", Adresse.class);
+		query.setParameter(1, ville);
+
+		return query.getResultList();
 	}
 
 }
