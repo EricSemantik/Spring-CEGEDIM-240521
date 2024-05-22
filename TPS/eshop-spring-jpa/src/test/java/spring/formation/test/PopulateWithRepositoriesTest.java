@@ -3,10 +3,11 @@ package spring.formation.test;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import spring.formation.config.JPAConfiguration;
 import spring.formation.model.Adresse;
@@ -29,38 +30,28 @@ import spring.formation.repository.IFournisseurRepository;
 import spring.formation.repository.IProduitRepository;
 import spring.formation.repository.IUtilisateurRepository;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = JPAConfiguration.class)
 public class PopulateWithRepositoriesTest {
 
-	private static AnnotationConfigApplicationContext context = null;
+	@Autowired
+	private IAdresseRepository adresseRepository;
+	@Autowired
+	private IClientRepository clientRepository;
+	@Autowired
+	private ICommandeDetailRepository commandeDetailRepository;
+	@Autowired
+	private ICommandeRepository commandeRepository;
+	@Autowired
+	private ICommentaireRepository commentaireRepository;
+	@Autowired
+	private IFournisseurRepository fournisseurRepository;
+	@Autowired
+	private IProduitRepository produitRepository;
+	@Autowired
+	private IUtilisateurRepository utilisateurRepository;
+
 	
-	private static IAdresseRepository adresseRepository = null;
-	private static IClientRepository clientRepository = null;
-	private static ICommandeDetailRepository commandeDetailRepository = null;
-	private static ICommandeRepository commandeRepository = null;
-	private static ICommentaireRepository commentaireRepository = null;
-	private static IFournisseurRepository fournisseurRepository = null;
-	private static IProduitRepository produitRepository = null;
-	private static IUtilisateurRepository utilisateurRepository = null;
-
-	@BeforeClass
-	public static void beforeAll() {
-		context = new AnnotationConfigApplicationContext(JPAConfiguration.class);
-		
-		adresseRepository = context.getBean(IAdresseRepository.class);
-		clientRepository = context.getBean(IClientRepository.class);
-		commandeDetailRepository = context.getBean(ICommandeDetailRepository.class);
-		commandeRepository = context.getBean(ICommandeRepository.class);
-		commentaireRepository = context.getBean(ICommentaireRepository.class);
-		fournisseurRepository = context.getBean(IFournisseurRepository.class);
-		produitRepository = context.getBean(IProduitRepository.class);
-		utilisateurRepository = context.getBean(IUtilisateurRepository.class);
-	}
-
-	@AfterClass
-	public static void afterAll() {
-		context.close();
-	}
-
 	@Test
 	public void populate() {
 
