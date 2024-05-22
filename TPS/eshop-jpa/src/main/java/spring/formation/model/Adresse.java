@@ -12,17 +12,27 @@ import jakarta.persistence.Table;
 public class Adresse {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "adr_id")
 	private Long id;
 
-	@Column(name = "adr_rue", length = 200, nullable = false)
+	@Column(length = 200, nullable = false)
 	private String rue;
 
-	@Column(name = "adr_cp", length = 10)
+	@Column(name = "code_postal", length = 10)
 	private String codePostal;
 
-	@Column(name = "adr_ville", length = 150)
+	@Column(length = 150)
 	private String ville;
+
+	public Adresse() {
+		super();
+	}
+
+	public Adresse(String rue, String codePostal, String ville) {
+		super();
+		this.rue = rue;
+		this.codePostal = codePostal;
+		this.ville = ville;
+	}
 
 	public Long getId() {
 		return id;
@@ -55,6 +65,5 @@ public class Adresse {
 	public void setVille(String ville) {
 		this.ville = ville;
 	}
-
 
 }

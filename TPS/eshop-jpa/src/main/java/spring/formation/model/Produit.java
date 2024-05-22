@@ -1,10 +1,16 @@
 package spring.formation.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -12,20 +18,28 @@ import jakarta.persistence.Table;
 public class Produit {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "pro_id")
 	private Long id;
 
-	@Column(name = "pro_nom", length = 150)
+	@Column(length = 150)
 	private String nom;
 
-	@Column(name = "pro_prix")
 	private Double prix;
 
-	@Column(name = "pro_ref", length = 100)
+	@Column(name = "ref", length = 100)
 	private String reference;
 
-	@Column(name = "pro_modele", length = 100)
+	@Column(length = 100)
 	private String modele;
+	
+	@ManyToOne
+	@JoinColumn(name="fournisseur_id")
+	private Fournisseur fournisseur;
+
+	@OneToMany(mappedBy = "produit")
+	private List<CommandeDetail> commandeDetails = new ArrayList<>();
+
+	@OneToMany(mappedBy = "produit")
+	private List<Commentaire> commentaires = new ArrayList<>();
 
 	public Produit() {
 		super();
@@ -69,6 +83,14 @@ public class Produit {
 
 	public void setModele(String modele) {
 		this.modele = modele;
+	}
+
+	public List<CommandeDetail> getCommandeDetails() {
+		return commandeDetails;
+	}
+
+	public void setCommandeDetails(List<CommandeDetail> commandeDetails) {
+		this.commandeDetails = commandeDetails;
 	}
 
 }

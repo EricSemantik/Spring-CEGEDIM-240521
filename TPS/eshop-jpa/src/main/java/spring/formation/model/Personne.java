@@ -4,15 +4,17 @@ import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
-import jakarta.persistence.Table;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 
 @Entity
-@Table(name = "personne")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, name = "type", length = 15)
 public abstract class Personne {
@@ -23,6 +25,17 @@ public abstract class Personne {
 
 	@Column(length = 255, nullable = false)
 	private String nom;
+
+	@Enumerated(EnumType.STRING)
+	@Column(length = 10)
+	private Civilite civilite;
+
+	@Column(length = 255)
+	private String email;
+
+	@OneToOne
+	@JoinColumn(name = "utilisateur_id")
+	private Utilisateur utilisateur;
 
 	public Personne() {
 		super();
@@ -42,6 +55,30 @@ public abstract class Personne {
 
 	public void setNom(String nom) {
 		this.nom = nom;
+	}
+
+	public Civilite getCivilite() {
+		return civilite;
+	}
+
+	public void setCivilite(Civilite civilite) {
+		this.civilite = civilite;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public Utilisateur getUtilisateur() {
+		return utilisateur;
+	}
+
+	public void setUtilisateur(Utilisateur utilisateur) {
+		this.utilisateur = utilisateur;
 	}
 
 }
