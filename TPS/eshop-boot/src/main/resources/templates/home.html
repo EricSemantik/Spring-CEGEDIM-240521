@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="layout.html">
 <head>
 <meta charset="UTF-8">
-<title>Ma page d'accueil</title>
+<title>Mon titre de l'accueil</title>
 </head>
 <body>
-	<h1>Accueil</h1>
-	
-	<h3>Bonjour le <span th:text="${nom}"></span></h3>
-	
-	<h3>Bonjour le [[${nom}]]</h3>
-	
+	<section layout:fragment="monContenu">
+		<div class="jumbotron">
+			<h1 class="display-4" th:if="${username != null && username != ''}">Bien le bonjour [[${username}]] !</h1>
+			<h1 class="display-4" th:if="${username == null}">Bonjour le monde !</h1>
+		</div>
+	</section>
 </body>
 </html>

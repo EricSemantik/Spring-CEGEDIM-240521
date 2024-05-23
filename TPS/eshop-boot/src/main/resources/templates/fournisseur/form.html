@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="layout.html">
+<head>
+<meta charset="UTF-8">
+<title>Edition d'un produit</title>
+</head>
+<body>
+	<section layout:fragment="monContenu">
+		<div class="card mt-3">
+			<form th:action="@{/fournisseur/save}" method="post">
+				<input type="hidden" name="id" th:value="${fournisseur.id}" />
+				<div class="card-body">
+					<div class="form-group">
+						<label for="nom">Nom:</label> <input type="text"
+							class="form-control" id="nom" name="nom"
+							th:value="${fournisseur.nom}" />
+						<span class="text-danger" th:errors="${fournisseur.nom}"></span>
+					</div>
+					<div class="form-group">
+						<label for="email">Adresse Email:</label> <input type="text"
+							class="form-control" id="email" name="email"
+							th:value="${fournisseur.email}" />
+						<span class="text-danger" th:errors="${fournisseur.email}"></span>
+					</div>
+					<div class="form-group">
+						<label for="responsable">Responsable:</label> <input type="text"
+							class="form-control" id="responsable" name="responsable"
+							th:value="${fournisseur.responsable}" />
+						<span class="text-danger" th:errors="${fournisseur.responsable}"></span>
+					</div>
+
+				</div>
+				<div class="card-footer">
+					<div class="btn-group btn-group-lg float-right">
+						<button type="submit" class="btn btn-success">
+							<i class="bi bi-check-square-fill"></i>
+						</button>
+						<a class="btn btn-warning" th:href="@{/fournisseur/cancel}"><i
+							class="bi bi-backspace-fill"></i></a>
+					</div>
+				</div>
+			</form>
+		</div>
+	</section>
+</body>
+</html>

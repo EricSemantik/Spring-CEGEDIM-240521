@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "produit")
@@ -21,6 +22,7 @@ public class Produit {
 	private Long id;
 
 	@Column(length = 150)
+	@Size(min = 3, message = "Le nom doit comporter au moins 3 caractères")
 	private String nom;
 
 	private Double prix;

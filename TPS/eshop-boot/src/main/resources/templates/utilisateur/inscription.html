@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="layout.html">
+<head>
+<meta charset="UTF-8">
+<title>Inscription</title>
+</head>
+<body>
+	<section layout:fragment="monContenu">
+		<div class="card mt-3">
+			<form th:action="@{/inscription}" method="post">
+				<div class="card-body">
+					<div class="form-group">
+						<label for="nom">Nom:</label> <input type="text"
+							class="form-control" id="nom" name="nom"
+							th:value="${utilisateur.nom}" />
+						<span class="text-danger" th:errors="${utilisateur.nom}"></span>
+					</div>
+					<div class="form-group">
+						<label for="prenom">Prénom:</label> <input type="text"
+							class="form-control" id="prenom" name="prenom"
+							th:value="${utilisateur.prenom}" />
+						<span class="text-danger" th:errors="${utilisateur.prenom}"></span>
+					</div>
+					<div class="form-group">
+						<label for="login">Login:</label> <input type="text"
+							class="form-control" id="login" name="login"
+							th:value="${utilisateur.login}" />
+						<span class="text-danger" th:errors="${utilisateur.login}"></span>
+					</div>
+					<div class="form-group">
+						<label for="motDePasse">Mot de passe:</label> <input type="password"
+							class="form-control" id="motDePasse" name="motDePasse"
+							th:value="${utilisateur.motDePasse}" />
+						<span class="text-danger" th:errors="${utilisateur.motDePasse}"></span>
+					</div>
+					<div class="form-group">
+						<label for="motDePasseConfirm">Confirmation du mot de passe:</label> <input type="password"
+							class="form-control" id="motDePasseConfirm" name="motDePasseConfirm"
+							th:value="${utilisateur.motDePasseConfirm}" />
+						<span class="text-danger" th:errors="${utilisateur.motDePasseConfirm}"></span>
+					</div>
+
+				</div>
+				<div class="card-footer">
+					<div class="btn-group btn-group-lg float-right">
+						<button type="submit" class="btn btn-success">
+							<i class="bi bi-check-square-fill"></i>
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</section>
+</body>
+</html>

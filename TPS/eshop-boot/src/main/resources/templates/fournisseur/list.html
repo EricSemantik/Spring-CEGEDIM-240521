@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!-- ETAPE 5 : Exécution de la page -->
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="layout.html">
+<head>
+<meta charset="UTF-8">
+<title>Liste des fournisseurs</title>
+
+</head>
+<body>
+	<section layout:fragment="monContenu">
+		<div class="card mt-3">
+			<div class="card-header bg-primary text-white display-6">Liste des fournisseurs</div>
+			<div class="card-body">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Identifiant</th>
+							<th>Nom</th>
+							<th>Adresse Email</th>
+							<th>Responsable</th>
+							<th>Adresses</th>
+							<th></th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<tr th:each="f : ${fournisseurs}">
+							<td th:text="${f.id}"></td>
+							<td>[[${f.nom}]]</td>
+							<td>[[${f.email}]]</td>
+							<td>[[${f.responsable}]]</td>
+							<td><ul>
+								<li th:each="adr : ${f.adresses}">[[${adr.id}]]</li>
+							</ul></td>
+							<td><div class="btn-group btn-group-sm">
+									<a th:href="@{/fournisseur/edit?idFournisseur={id}(id=${f.id})}" class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
+									<a th:href="@{/fournisseur/delete?idFournisseur={id}(id=${f.id})}"class="btn btn-danger"><i class="bi bi-trash"></i></a>
+								</div></td>
+						</tr>
+					</tbody>
+
+				</table>
+			</div>
+			<div class="card-footer">
+				<a th:href="@{/fournisseur/add}" class="btn btn-success btn-lg"><i
+					class="bi bi-plus-square"></i></a>
+			</div>
+		</div>
+	</section>
+</body>
+</html>
