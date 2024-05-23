@@ -8,11 +8,13 @@ import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
 @Entity
 @DiscriminatorValue("client")
+@NamedQuery(name = "Client.findByIdWithCommandes", query = "select distinct c from Client c left join fetch c.commandes where c.id = ?1")
 public class Client extends Personne {
 	@Column(length = 255)
 	private String prenom;
