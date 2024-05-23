@@ -14,10 +14,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "utilisateur")
+@NamedQuery(name = "Utilisateur.findByUsernameAndPassword", query="select u from Utilisateur u where u.identifiant = ?1 and u.motDePasse = ?2")
 public class Utilisateur {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

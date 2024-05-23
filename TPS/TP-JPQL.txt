@@ -1,0 +1,8 @@
+1. Trouver les adresses en recherchant par le code postal (commence par) => par convention
+2. Liste toutes les adresses triées par Ville => par convention 
+3. Rajouter à la requête 2. la possibilité de récupérer qu'une partie de la requête (Page)
+
+4. Trouver tous les clients qui ont effectué une commande en recherchant par année (param) => @Query
+5. Rechercher un client par son id en pré-chargeant la liste des commandes (fetch) => @NamedQuery
+
+6. Trouver tous les produits qui ont un commentaire inférieur à une note passé en param => @Query
