@@ -70,8 +70,11 @@ class EshopBootApplicationTests {
 
 		produit = produitRepository.save(produit);
 
-		Utilisateur utiAdmin = new Utilisateur("admin", "123456", true, Role.ADMIN);
+		Utilisateur utiAdmin = new Utilisateur("admin", "123456", true, Role.SUPER_ADMIN);
 		utiAdmin = utilisateurRepository.save(utiAdmin);
+		
+		Utilisateur utiAngel= new Utilisateur("angel", "123456", true, Role.ADMIN);
+		utiAngel = utilisateurRepository.save(utiAngel);
 
 		Utilisateur utiClient = new Utilisateur("esultan", "123456", true, Role.CLIENT);
 		utiClient = utilisateurRepository.save(utiClient);
