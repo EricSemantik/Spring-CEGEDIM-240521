@@ -31,10 +31,10 @@ public class UtilisateurRestController {
 
 	@Autowired
 	private IClientRepository repoClient;
-	
+
 	@Autowired
 	private IFournisseurRepository repoFournisseur;
-	
+
 	@Autowired
 	private IUtilisateurRepository repoUtilisateur;
 
@@ -66,22 +66,22 @@ public class UtilisateurRestController {
 
 	@PatchMapping("/{id}")
 	public Utilisateur partialUpdate(@RequestBody Map<String, Object> fields, @PathVariable Long id) {
-		if (id.intValue() != (Integer)fields.get("id") || !this.repoUtilisateur.existsById(id)) {
+		if (id.intValue() != (Integer) fields.get("id") || !this.repoUtilisateur.existsById(id)) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}
-		
+
 		Utilisateur utilisateur = this.repoUtilisateur.findById(id).get();
-		
-		if(fields.containsKey("identifiant")) {
-			utilisateur.setIdentifiant((String)fields.get("identifiant"));
+
+		if (fields.containsKey("identifiant")) {
+			utilisateur.setIdentifiant((String) fields.get("identifiant"));
 		}
-		if(fields.containsKey("motDePasse")) {
-			utilisateur.setMotDePasse((String)fields.get("motDePasse"));
+		if (fields.containsKey("motDePasse")) {
+			utilisateur.setMotDePasse((String) fields.get("motDePasse"));
 		}
-		if(fields.containsKey("active")) {
-			utilisateur.setActive((boolean)fields.get("active"));
+		if (fields.containsKey("active")) {
+			utilisateur.setActive((boolean) fields.get("active"));
 		}
-		
+
 		return this.repoUtilisateur.save(utilisateur);
 	}
 
@@ -93,20 +93,21 @@ public class UtilisateurRestController {
 
 		this.repoUtilisateur.deleteById(id);
 	}
-	
+
 	@PostMapping("/connexion")
 	public ConnexionResponse connexion(@RequestBody ConnexionRequest connexionRequest) {
 		ConnexionResponse connexionResponse = new ConnexionResponse();
-		
-		Optional<Utilisateur> optUtilisateur = this.repoUtilisateur.findByUsernameAndPassword(connexionRequest.getUsername(), connexionRequest.getPassword());
-		
+
+		Optional<Utilisateur> optUtilisateur = this.repoUtilisateur
+				.findByUsernameAndPassword(connexionRequest.getUsername(), connexionRequest.getPassword());
+
 		Utilisateur utilisateur = optUtilisateur.orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN));
-		
+
 		connexionResponse.setUtilisateurId(utilisateur.getId());
 		connexionResponse.setLogin(utilisateur.getIdentifiant());
 		connexionResponse.setActive(utilisateur.isActive());
-		
-		if(utilisateur.getRoles().contains(Role.CLIENT)) {
+
+		if (utilisateur.getRoles().contains(Role.CLIENT)) {
 			connexionResponse.setRole("CLIENT");
 			this.repoClient.findByUtilisateurId(utilisateur.getId()).ifPresent(obj -> {
 				connexionResponse.setPersonneId(obj.getId());
@@ -114,7 +115,7 @@ public class UtilisateurRestController {
 				connexionResponse.setEmail(obj.getEmail());
 				connexionResponse.setPrenom(obj.getPrenom());
 			});
-		} else if(utilisateur.getRoles().contains(Role.FOURNISSEUR)) {
+		} else if (utilisateur.getRoles().contains(Role.FOURNISSEUR)) {
 			connexionResponse.setRole("FOURNISSEUR");
 			this.repoFournisseur.findByUtilisateurId(utilisateur.getId()).ifPresent(obj -> {
 				connexionResponse.setPersonneId(obj.getId());
@@ -123,9 +124,8 @@ public class UtilisateurRestController {
 				connexionResponse.setResponsable(obj.getResponsable());
 			});
 		}
-		
+
 		return connexionResponse;
 	}
-	
-}
 
+}

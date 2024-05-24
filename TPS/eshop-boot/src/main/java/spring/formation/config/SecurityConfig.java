@@ -1,0 +1,79 @@
+package spring.formation.config;
+
+import java.util.List;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+@Configuration
+public class SecurityConfig {
+
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		// Méthode d'authentification par HTTP Basic
+		http.httpBasic(Customizer.withDefaults());
+
+		http.authorizeHttpRequests(authorize -> {
+			authorize.requestMatchers("/api/utilisateur/**").hasAnyRole("ADMIN", "SUPER_ADMIN");
+			authorize.requestMatchers("/api/**").authenticated();
+			authorize.requestMatchers("/**").permitAll();
+		});
+
+		// Désactiver la protection CSRF
+		http.csrf(c -> c.ignoringRequestMatchers("/api/**"));
+
+		// Configurer les CORS (Cross-Origine Resources Sharing)
+		http.cors(c -> {
+			CorsConfigurationSource source = request -> {
+				CorsConfiguration config = new CorsConfiguration();
+
+				// On autorise tout le monde
+				config.setAllowedOrigins(List.of("*"));
+
+				// On autorise toutes les commandes HTTP (GET, POST, PUT, ...)
+				config.setAllowedMethods(List.of("*"));
+
+				// On autorise toutes les en-têtes HTTP
+				config.setAllowedHeaders(List.of("*"));
+
+				return config;
+			};
+
+			c.configurationSource(source);
+		});
+		
+		http.sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+		return http.build();
+	}
+	
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		// Pas d'encadage sur les mots de passe - PAS BIEN
+//		return NoOpPasswordEncoder.getInstance();
+
+		// Encodage Blowfish
+		return new BCryptPasswordEncoder();
+	}
+
+//	@Bean
+//	public UserDetailsService inMemory() {
+//		InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
+//		manager.createUser(User.withUsername("client").password("{noop}123456").roles("CLIENT").build());
+//		manager.createUser(User.withUsername("fournisseur").password("{noop}123456").roles("FOURNISSEUR").build());
+//		manager.createUser(User.withUsername("admin").password("{noop}123456").roles("ADMIN").build());
+//		manager.createUser(User.withUsername("sa").password("{noop}123456").roles("SUPER_ADMIN").build());
+//		return manager;
+//	}
+}
