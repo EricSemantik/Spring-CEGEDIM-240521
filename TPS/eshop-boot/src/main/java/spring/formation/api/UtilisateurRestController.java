@@ -2,6 +2,7 @@ package spring.formation.api;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,13 +17,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import spring.formation.api.request.ConnexionRequest;
+import spring.formation.api.response.ConnexionResponse;
+import spring.formation.model.Role;
 import spring.formation.model.Utilisateur;
+import spring.formation.repository.IClientRepository;
+import spring.formation.repository.IFournisseurRepository;
 import spring.formation.repository.IUtilisateurRepository;
 
 @RestController
 @RequestMapping("/api/utilisateur")
 public class UtilisateurRestController {
 
+	@Autowired
+	private IClientRepository repoClient;
+	
+	@Autowired
+	private IFournisseurRepository repoFournisseur;
+	
 	@Autowired
 	private IUtilisateurRepository repoUtilisateur;
 
@@ -81,4 +93,39 @@ public class UtilisateurRestController {
 
 		this.repoUtilisateur.deleteById(id);
 	}
+	
+	@PostMapping("/connexion")
+	public ConnexionResponse connexion(@RequestBody ConnexionRequest connexionRequest) {
+		ConnexionResponse connexionResponse = new ConnexionResponse();
+		
+		Optional<Utilisateur> optUtilisateur = this.repoUtilisateur.findByUsernameAndPassword(connexionRequest.getUsername(), connexionRequest.getPassword());
+		
+		Utilisateur utilisateur = optUtilisateur.orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN));
+		
+		connexionResponse.setUtilisateurId(utilisateur.getId());
+		connexionResponse.setLogin(utilisateur.getIdentifiant());
+		connexionResponse.setActive(utilisateur.isActive());
+		
+		if(utilisateur.getRoles().contains(Role.CLIENT)) {
+			connexionResponse.setRole("CLIENT");
+			this.repoClient.findByUtilisateurId(utilisateur.getId()).ifPresent(obj -> {
+				connexionResponse.setPersonneId(obj.getId());
+				connexionResponse.setNom(obj.getNom());
+				connexionResponse.setEmail(obj.getEmail());
+				connexionResponse.setPrenom(obj.getPrenom());
+			});
+		} else if(utilisateur.getRoles().contains(Role.FOURNISSEUR)) {
+			connexionResponse.setRole("FOURNISSEUR");
+			this.repoFournisseur.findByUtilisateurId(utilisateur.getId()).ifPresent(obj -> {
+				connexionResponse.setPersonneId(obj.getId());
+				connexionResponse.setNom(obj.getNom());
+				connexionResponse.setEmail(obj.getEmail());
+				connexionResponse.setResponsable(obj.getResponsable());
+			});
+		}
+		
+		return connexionResponse;
+	}
+	
 }
+

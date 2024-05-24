@@ -17,5 +17,8 @@ public interface IClientRepository extends JpaRepository<Client, Long>{
 	@Query("select c from Client c join c.commandes com where YEAR(com.dtCommande) = ?1")
 	List<Client> findAllByAnneeCommande(String annee);
 	
-	Optional<Client> findByIdWithCommandes(Long id); 
+	Optional<Client> findByIdWithCommandes(Long id);
+	
+	@Query("select c from Client c where c.utilisateur.id = ?1")
+	Optional<Client> findByUtilisateurId(Long id); 
 }
