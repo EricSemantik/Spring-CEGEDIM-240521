@@ -1,5 +1,7 @@
 package spring.formation.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
@@ -21,20 +23,25 @@ public abstract class Personne {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonView(Views.ViewPersonne.class)
 	private Long id;
 
 	@Column(length = 255, nullable = false)
+	@JsonView(Views.ViewPersonne.class)
 	private String nom;
 
 	@Enumerated(EnumType.STRING)
 	@Column(length = 10)
+	@JsonView(Views.ViewPersonne.class)
 	private Civilite civilite;
 
 	@Column(length = 255)
+	@JsonView(Views.ViewPersonne.class)
 	private String email;
 
 	@OneToOne
 	@JoinColumn(name = "utilisateur_id")
+	@JsonView(Views.ViewPersonne.class)
 	private Utilisateur utilisateur;
 
 	public Personne() {

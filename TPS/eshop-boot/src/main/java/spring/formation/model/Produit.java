@@ -3,6 +3,8 @@ package spring.formation.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,18 +21,23 @@ import jakarta.validation.constraints.Size;
 public class Produit {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonView(Views.ViewBasic.class)
 	private Long id;
 
 	@Column(length = 150)
 	@Size(min = 3, message = "Le nom doit comporter au moins 3 caractères")
+	@JsonView(Views.ViewBasic.class)
 	private String nom;
 
+	@JsonView(Views.ViewBasic.class)
 	private Double prix;
 
 	@Column(name = "ref", length = 100)
+	@JsonView(Views.ViewBasic.class)
 	private String reference;
 
 	@Column(length = 100)
+	@JsonView(Views.ViewBasic.class)
 	private String modele;
 
 	@ManyToOne
