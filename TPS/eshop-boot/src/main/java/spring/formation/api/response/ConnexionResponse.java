@@ -2,6 +2,7 @@ package spring.formation.api.response;
 
 public class ConnexionResponse {
 	private Long utilisateurId;
+	private String token;
 	private Long personneId;
 	private String login;
 	private boolean active;
@@ -21,6 +22,14 @@ public class ConnexionResponse {
 
 	public void setUtilisateurId(Long utilisateurId) {
 		this.utilisateurId = utilisateurId;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 	public Long getPersonneId() {

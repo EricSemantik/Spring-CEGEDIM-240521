@@ -6,6 +6,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -19,6 +22,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import spring.formation.api.request.ConnexionRequest;
 import spring.formation.api.response.ConnexionResponse;
+import spring.formation.config.jwt.JWTUtils;
 import spring.formation.model.Role;
 import spring.formation.model.Utilisateur;
 import spring.formation.repository.IClientRepository;
@@ -37,6 +41,9 @@ public class UtilisateurRestController {
 
 	@Autowired
 	private IUtilisateurRepository repoUtilisateur;
+
+	@Autowired
+	private AuthenticationManager authenticationManager;
 
 	@GetMapping("")
 	public List<Utilisateur> findAll() {
@@ -96,10 +103,25 @@ public class UtilisateurRestController {
 
 	@PostMapping("/connexion")
 	public ConnexionResponse connexion(@RequestBody ConnexionRequest connexionRequest) {
+		// On va demander à SPRING SECURITY de vérifier le username / password
+		// On a besoin d'un AuthenticationManager
+		// On utilisera la méthode authenticate, qui attend un Authentication
+		// Et on utilisera le type UsernamePasswordAuthenticationToken pour donner le
+		// username & le password
+		Authentication authentication = new UsernamePasswordAuthenticationToken(connexionRequest.getUsername(),
+				connexionRequest.getPassword());
+
+		// On demande à SPRING SECURITY de vérifier ces informations de connexion
+		this.authenticationManager.authenticate(authentication);
+
+		// On génère un jeton pour l'utilisateur connecté
+		String token = JWTUtils.generate(authentication);
+
 		ConnexionResponse connexionResponse = new ConnexionResponse();
+		connexionResponse.setToken(token);
 
 		Optional<Utilisateur> optUtilisateur = this.repoUtilisateur
-				.findByUsernameAndPassword(connexionRequest.getUsername(), connexionRequest.getPassword());
+				.findByIdentifiant(authentication.getName());
 
 		Utilisateur utilisateur = optUtilisateur.orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN));
 

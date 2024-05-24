@@ -4,27 +4,30 @@ import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+
+import spring.formation.config.jwt.JwtHeaderAuthorizationFilter;
 
 @Configuration
 public class SecurityConfig {
 
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+	public SecurityFilterChain filterChain(HttpSecurity http, JwtHeaderAuthorizationFilter jwtFilter) throws Exception {
 		// Méthode d'authentification par HTTP Basic
 		http.httpBasic(Customizer.withDefaults());
 
 		http.authorizeHttpRequests(authorize -> {
+			authorize.requestMatchers("/api/utilisateur/connexion").permitAll();
 			authorize.requestMatchers("/api/utilisateur/**").hasAnyRole("ADMIN", "SUPER_ADMIN");
 			authorize.requestMatchers("/api/**").authenticated();
 			authorize.requestMatchers("/**").permitAll();
@@ -52,12 +55,22 @@ public class SecurityConfig {
 
 			c.configurationSource(source);
 		});
-		
+
+		// Positionner le filtre JWT AVANT le filter
+		// UsernamePasswordAuthenticationFilter
+		http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
 		http.sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
 		return http.build();
 	}
-	
+
+	// Grace à ce Bean, on pourra injecter un AuthenticationManager directement
+	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+		return config.getAuthenticationManager();
+	}
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		// Pas d'encadage sur les mots de passe - PAS BIEN
