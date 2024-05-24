@@ -1,14 +1,23 @@
 package spring.formation.api.request;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 public class InscriptionRequest {
 	private String civilite;
+	@NotEmpty(message="Le nom est obligatoire")
 	private String nom;
 	private String prenom;
+	@NotEmpty(message="Le date de naissance est obligatoire")
 	private String naissance;
 	private String rue;
 	private String codePostal;
 	private String ville;
+	@NotEmpty(message="Le login est obligatoire")
+	@Size(min=5)
 	private String login;
+	@Pattern(regexp = "^[a-zA-Z0-9]{8}.*$")
 	private String motDePasse;
 
 	public InscriptionRequest() {
